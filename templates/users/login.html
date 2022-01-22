@@ -8,11 +8,9 @@
 {% if error %}
     <p class="alert alert-danger">{{ error }}</p>
 {% endif %}
-        <form method='POST' action='{% url 'login' %}'>
+        <form method='POST' action='{% url 'users:login' %}'>
             {% csrf_token %}
-            <!-- <input type='text' placeholder='username' name='username'/>
-            <input type='password' placeholder='password' name='password'/>
-            <button type='submit'>Login</button> -->
+            
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="username" class="form-control" id="username" name="username" aria-describedby="userHelp" placeholder="Enter username">
@@ -26,6 +24,6 @@
         </form>
         <div class="form-group text-center">
     <!--add a label that says if already an user add a button redirecting to login-->
-            <a href="{% url 'signup' %}" class="btn btn-link">Don't have an account yet??</a>
+            <a href="{% url 'users:signup' %}" class="btn btn-link">Don't have an account yet??</a>
         </div>
 {% endblock %}

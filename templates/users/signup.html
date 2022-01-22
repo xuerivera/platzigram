@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block container %}
-    <form action="{% url 'signup' %}" method="POST">
+    <form action="{% url 'users:signup' %}" method="POST">
         {% csrf_token %}
         
         {{ form.as_p }}
@@ -16,7 +16,7 @@
             <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
 
     <!--add a label that says if already an user add a button redirecting to login-->
-            <a href="{% url 'login' %}" class="btn btn-link">Already an user?</a>
+            <a href="{% url 'users:login' %}" class="btn btn-link">Already an user?</a>
         </div>
 
 
