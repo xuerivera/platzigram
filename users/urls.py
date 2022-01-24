@@ -1,7 +1,6 @@
 """users urls"""
 # django
 from django.urls import path
-from django.views.generic import TemplateView
 
 #views
 from users import views
@@ -9,12 +8,7 @@ from users import views
 
 urlpatterns = [
     
-    #posts
-    path(
-        route='@<str:username>/',
-        view=views.UserDetailView.as_view(),
-        name='detail',
-    ),
+    
 
     #management
     path(
@@ -29,11 +23,18 @@ urlpatterns = [
 
     path(
         route='signup/', 
-        view=views.signup, 
+        view=views.SignupView.as_view(), 
         name='signup'),
 
     path(
         route='me/profile/', 
-        view=views.update_profile, 
+        view=views.UpdateProfileView.as_view(), 
         name='update_profile'),
+    
+    #posts
+    path(
+        route='<str:username>/',
+        view=views.UserDetailView.as_view(),
+        name='detail',
+    ),
 ]

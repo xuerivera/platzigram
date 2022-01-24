@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{%block head_content %}
+    <title>{{ post.title }}</title>
+{% endblock %}
+
+<!DOCTYPE html>
+
+{%block container %}
+    <div class="container">
+        {% include "post/post_card.html" %}
+    </div>
+{% endblock %}

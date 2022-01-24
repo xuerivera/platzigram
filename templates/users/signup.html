@@ -1,8 +1,7 @@
 {% extends 'users/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block head_content %}
 
-    <title>GameHub | Sign Up</title>
 
 {% endblock %}
 
@@ -10,8 +9,31 @@
     <form action="{% url 'users:signup' %}" method="POST">
         {% csrf_token %}
         
-        {{ form.as_p }}
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Username" name="username" required="true" />
+        </div>
 
+        <div class="form-group">
+            <input class="form-control" type="password" placeholder="Password" name="password" required="true" />
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" type="password" placeholder="Password confirmation" name="password_confirmation" required="true" />
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="First name" name="first_name" required="true" />
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Last name" name="last_name" required="true" />
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" type="email" placeholder="Email address" name="email" required="true" />
+        </div>
+
+        <hr>
         <div class="form-group text-center">
             <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
 
