@@ -17,6 +17,13 @@ from users.models import Profile
 from users.forms import SignupForm
 
 
+# The UserDetailView class is a subclass of the generic DetailView class. 
+# It displays a user's profile. 
+# The template_name attribute is used to tell Django to use a specific template. 
+# The slug_field attribute tells Django which field to use as the slug. 
+# The slug_url_kwarg attribute tells Django to use the username as the name of the URL parameter. 
+# The queryset attribute tells Django to use a specific model to build the view. 
+# The context_object_name attribute tells Django to use the
 class UserDetailView(LoginRequiredMixin, DetailView):
     """user detail view"""
     template_name = 'users/detail.html'
@@ -27,41 +34,76 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
 
     def get_context_data(self, **kwargs):
+        '''
+        Get the context data for the user profile page.
+        
+        
+        :return: The user's profile page.
+        '''
         context = super().get_context_data(**kwargs)
         user = self.get_object()
         context['posts'] = Post.objects.filter(user=user).order_by('-created')
         return context
 
 
+# The SignupView class inherits from FormView, which is a generic class-based view that handles the
+# rendering of a form and the processing of that form.
+# 
+# The template_name attribute is used to tell Django to use a specific template to render this view.
+# 
+# The form_class attribute is used to tell Django which form should be used to handle data in this
+# view.
+# 
+# The success_url attribute is used to tell Django what URL should be used after the form has been
+# successfully processed.
+# 
+# The form_valid method is used to handle the data
 class SignupView(FormView):
-    """Users signup form"""
-
     template_name = 'users/signup.html'
     form_class = SignupForm
     success_url = reverse_lazy('users:login')
 
     def form_valid(self, form):
-        """save form data"""
         form.save()
         return super().form_valid(form)
 
 
+
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
-    """Update Profile View"""
+    """
+    The UpdateProfileView class inherits from both LoginRequiredMixin and UpdateView. 
+    The LoginRequiredMixin class will ensure that only authenticated users can access the view. 
+    The UpdateView class will provide the mechanisms required to update the profile.
+    """
     template_name = 'users/update_profile.html'
     model = Profile
     fields = ['website', 'biography', 'phone_number', 'picture']
 
     def get_object(self):
-        """return user's profile"""
+        '''
+        The get_object() method is a built-in method in the ModelViewSet class. 
+        It does exactly what its name implies. It returns the object the view is displaying. 
+        In our case, it returns the user's profile.
+        
+        
+        :return: The user's profile.
+        '''
         return self.request.user.profile
 
     def get_success_url(self):
-        """reutrn to user's profile"""
+        '''
+        The get_success_url function is a method that returns the URL to redirect to after a successful
+        form submission. 
+        '''
         username = self.object.user.username
         return reverse('users:detail', kwargs={'username': username})
 
 def login_view(request):
+    '''
+    If the request is a POST, then it will try to authenticate the user. If it is successful, it will
+    log the user in and redirect to the feed page. Otherwise, it will render the login page with an
+    error message.
+    '''
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -76,7 +118,9 @@ def login_view(request):
 
 @login_required
 def logout_view(request):
-    """logout a user"""
+    '''
+    This function logs out the user and redirects them to the login page.
+    '''
     logout(request)
     return redirect('users:login')
     
