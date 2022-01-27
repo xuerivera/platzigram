@@ -1,10 +1,9 @@
 """Users views."""
 
 # Django
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.contrib.auth import views as auth_views
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, FormView, UpdateView
 
@@ -98,29 +97,10 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         username = self.object.user.username
         return reverse('users:detail', kwargs={'username': username})
 
-def login_view(request):
-    '''
-    If the request is a POST, then it will try to authenticate the user. If it is successful, it will
-    log the user in and redirect to the feed page. Otherwise, it will render the login page with an
-    error message.
-    '''
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user:
-            login(request, user)
-            return redirect('posts:feed')
-        else:
-            return render(request, 'users/login.html', {'error': 'Invalid username and password'})
-    return render(request, 'users/login.html')
+# Overriding the default login view in Django.
+class LoginView(auth_views.LoginView):
+    template_name = 'users/login.html'
+    redirect_authenticated_user = True
 
-
-@login_required
-def logout_view(request):
-    '''
-    This function logs out the user and redirects them to the login page.
-    '''
-    logout(request)
-    return redirect('users:login')
-    
+class LogoutView(LoginRequiredMixin, auth_views.LogoutView):
+    template_name = 'users/logout.html'
